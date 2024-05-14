@@ -1,3 +1,6 @@
-Conception d'une application back en NodeJS avec Docker<br/>
-Gestion d'un CRUD d'utilisateurs<br/>
-Code first avec l'ORM Prisma
+<h1>CRUD CESI</h1>
+<ul>
+  <li>Conception d'une application back en NodeJS avec Docker</li>
+  <li>Gestion d'un CRUD d'utilisateurs</li>
+  <li>Code first avec l'ORM Prisma</li>
+</ul>
