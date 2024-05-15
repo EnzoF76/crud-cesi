@@ -1,0 +1,13 @@
+{{!< main}}
+
+<h3>Modification de l'utilateur [{{user.id}}] :</h3>
+
+<form id="addUserForm" action="/edit/{{user.id}}" method="POST">
+    <label for="username">Nom d'utilisateur</label>
+    <input type="text" id="nameuser" name="username" value="{{user.username}}" required><br>
+    <label for="color">Couleur</label>
+    <input type="color" id="color" name="color" value="{{user.color}}" required><br>
+    <label for="bio">Description</label>
+    <input type="text" id="bio" name="bio" value="{{user.bio}}"><br>
+    <button type="submit">Valider</button>
+</form>
