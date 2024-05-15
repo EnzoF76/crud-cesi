@@ -1,13 +1,14 @@
 {{!< main}}
 
-<h3>Ajouter un utilisateur</h3>
+<h3>Ajouter un utilisateur :</h3>
+
 
 <form id="addUserForm" action="/add" method="POST">
     <label for="username">Nom d'utilisateur</label>
-    <input type="text" id="nameuser" name="username" required>
+    <input type="text" id="nameuser" name="username" required><br>
     <label for="color">Couleur</label>
-    <input type="color" id="color" name="color" required>
+    <input type="color" id="color" name="color" required><br>
     <label for="bio">Description</label>
-    <input type="text" id="bio" name="bio">
+    <input type="text" id="bio" name="bio"><br>
     <button type="submit">Ajouter</button>
 </form>
