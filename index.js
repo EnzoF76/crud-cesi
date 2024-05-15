@@ -8,6 +8,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const port = 3000;
 
+console.log("starting");
 //Config du moteur de vues handlebars
 app.engine('hbs', exphbs.engine({
   extname: '.hbs',

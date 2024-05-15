@@ -1,21 +1,18 @@
-# Utilisation d'une image de base Node.js
 FROM node:20.13.1
 
-# Définition du répertoire de travail de l'application
+# Create app directory
 WORKDIR usr/src/app
 
-# Copie des fichiers de dépendances
+# Install app dependencies
 COPY package*.json ./
-COPY package-lock.json ./
 
-# Installation des dépendances
 RUN npm install
 
-# Copie du reste du code source de l'application
+# Bundle app source
 COPY . .
 
-# Exposition du port sur lequel l'application écoute
+RUN npx prisma generate --schema=./prisma/schema.prisma
+
 EXPOSE 3000
 
-# Commande pour démarrer l'application
-CMD ["node", "index.js"]
+CMD [ "./init.sh"]
