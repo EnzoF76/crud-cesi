@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // NOTE Middleware pour servir les fichiers statiques
 app.use(express.static('public'));
 
-// NOTE Routes
-// Page d'accueil
+// ! Routes
+// NOTE Page d'accueil
 app.get('/', async (req, res) => {
   try {
     // Récupérer tous les utilisateurs de la base de données
@@ -36,7 +36,6 @@ app.get('/', async (req, res) => {
     res.status(500).json({ error: 'Error getting users' });
   }
 });
-
 
 // NOTE Page d'ajout d'un utilisateur
 app.get('/add', (req, res) => {
