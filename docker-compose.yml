@@ -6,25 +6,39 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      - postgres
+      networks:
+      - default
 
-  db:
+  postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: cesi_db
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+    networks:
+      - default
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+  pgadmin:
+    image: dpage/pgadmin4:8.6
     environment:
-      PMA_HOST: postgresql
-      POSTGRES_DB: cesi_db
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
     ports:
-      - "8080:80"
+      - "5050:5050"
     depends_on:
-      - db
+      - postgres
+    networks:
+      - default
+
+volumes:
+  db_data:
+    driver: ./data
+
+networks:
+  default:
+    driver: bridge
