@@ -1,30 +1,30 @@
-version: '2.1'
+version: '3' # Version du docker-compose
 
-services:
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: nz
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
+services: # Liste des services qu'on va utiliser
+  postgres: # Nom du service postgres
+    image: postgres # On récupère l'image officielle de postgres depuis le Docker Hub
+    environment: # Définition des variables d'environnements pour la base de données
+      POSTGRES_DB: mydb # Nom de la base
+      POSTGRES_USER: nz # Nom d'utilisateur
+      POSTGRES_PASSWORD: password # Mot de passe
+    ports: # Mapping des ports
+      - "5432:5432" # On map le port 5432 du conteneur avec le port 5432 local
 
-  node:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    env_file:
+  node: # Nom du service node
+    build: . # On build l'image depuis le Dockerfile du répertoire courant
+    ports: # Mapping des ports
+      - "3000:3000" # On map le port 3000 du conteneur avec le port 3000 local
+    depends_on: # Il faut attendre que le service postgres soit démarré pour démarrer celui ci
+      - postgres 
+    env_file: # On charge les variables d'environnements depuis le fichier .env
       - .env
 
-  pgadmin:
-    image: dpage/pgadmin4:8.6
-    ports:
-      - "8080:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: enzo@enzo.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    depends_on:
+  pgadmin: # Nom du service pgadmin
+    image: dpage/pgadmin4:8.6 # On récupère l'image officielle de pgadmin depuis le Docker Hub
+    ports: # Mapping des ports
+      - "8080:80" # On map le port 80 du conteneur avec le port 8080 local
+    environment: # Définition des variables d'environnements pour pgadmin
+      PGADMIN_DEFAULT_EMAIL: enzo@enzo.com # Email par défaut pour se connecter
+      PGADMIN_DEFAULT_PASSWORD: admin # Mot de passe par défaut pour se connecter
+    depends_on: # Il faut attendre que le service postgres soit démarré pour démarrer celui ci
       - postgres

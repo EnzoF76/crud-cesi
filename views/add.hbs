@@ -2,6 +2,9 @@
 
 <h3>Ajouter un utilisateur :</h3>
 
+{{#if error}}
+    <p class="error">{{error}}</p>
+{{/if}}
 
 <form id="addUserForm" action="/add" method="POST">
     <label for="username">Nom d'utilisateur</label>

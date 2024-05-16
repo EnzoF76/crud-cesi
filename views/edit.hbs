@@ -2,6 +2,10 @@
 
 <h3>Modification de l'utilateur [{{user.id}}] :</h3>
 
+{{#if error}}
+    <p class="error">{{error}}</p>
+{{/if}}
+
 <form id="addUserForm" action="/edit/{{user.id}}" method="POST">
     <label for="username">Nom d'utilisateur</label>
     <input type="text" id="nameuser" name="username" value="{{user.username}}" required><br>

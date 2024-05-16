@@ -1,4 +1,4 @@
-// NOTE Import des modules nécésaires
+// ! Import des modules 
 const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
@@ -8,7 +8,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const port = 3000;
 
-// NOTE Config du moteur de vues handlebars
+// ! Config Handlebars (moteur de vues)
 app.engine('hbs', exphbs.engine({
   extname: '.hbs',
   layoutsDir: path.join(__dirname, 'views/layouts'),
@@ -16,20 +16,19 @@ app.engine('hbs', exphbs.engine({
 }));
 app.set('view engine', 'hbs');
 
-// NOTE Middleware pour parser les données soumises à partir du formulaire
+// ! Middleware pour le parsage des données d'un formulaire
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// NOTE Middleware pour servir les fichiers statiques
+// ! Middleware pour le fichier static 
 app.use(express.static('public'));
 
-// ! Routes
-// NOTE Page d'accueil
+// ! Route index (liste des utilisateurs)
 app.get('/', async (req, res) => {
   try {
-    // Récupérer tous les utilisateurs de la base de données
+    // ! Récupérer tous les users de la base
     const users = await prisma.users.findMany();
 
-    // En rend la vue avec users en paramètre
+    // ! Render de la vue avec en paramètres les users
     res.render('index', {layout: 'main', users});
   } catch (error) {
     console.error('Error getting users:', error);
@@ -37,18 +36,18 @@ app.get('/', async (req, res) => {
   }
 });
 
-// NOTE Page d'ajout d'un utilisateur
+// ! Route ajout utilisateur
 app.get('/add', (req, res) => {
     res.render('add', {layout: 'main'});
 });
 
-// NOTE Soumission du formualire pour la page d'ajout
+// ! Soumission du formualire ajout user
 app.post('/add', async (req, res) => {
     try {
-        // Récupérer les données soumises à partir du formulaire
+        // ! Données du formulaire
         const { username, color, bio } = req.body;
 
-        // Insérer le nouvel utilisateur dans la base de données
+        // ! Insert de l'user dans la base
         const newUser = await prisma.users.create({
             data: {
                 username,
@@ -57,47 +56,47 @@ app.post('/add', async (req, res) => {
             }
         });
 
-        // Répondre avec le nouvel utilisateur créé
+        // ! Redirection vers l'index si pas d'erreur
         res.redirect('/');
     } catch (error) {
-        // Gérer les erreurs
-        console.error('Error adding user:', error);
-        res.status(500).json({ error: 'Error adding user' });
+        console.error('Erreur lors de l\'ajout d\'un utilisateur :', error);
+
+        // ! Re render de la page pour afficher l'erreur
+        res.render('add', {layout: 'main', error: 'Erreur lors de l\'ajout d\'un utilisateur (vérifier que l\'username n\'est pas déjà utilisé)' });
     }
 });
 
-// NOTE Page de modification d'un utilisateur
+// ! Route modification utilisateur
 app.get('/edit/:id', async (req, res) => {
     try {
-        // Récupérer l'ID de l'utilisateur à modifier
+        // ! Récup de l'id dans les paramètres
         const id = parseInt(req.params.id);
 
-        // Récupérer l'utilisateur à modifier
+        // ! Select dans la base avec l'id de l'user
         const user = await prisma.users.findUnique({
             where: {
                 id
             }
         });
 
-        // En rend la vue avec user en paramètre
+        // ! Render de la vue edit avec en paramètre l'user
         res.render('edit', {layout: 'main', user});
     } catch (error) {
-        // Gérer les erreurs
         console.error('Error getting user:', error);
         res.status(500).json({ error: 'Error getting user' });
     }
 });
 
-// NOTE Soumission du formualire pour la page de modification
+// ! Soumission du formualire modification user
 app.post('/edit/:id', async (req, res) => {
     try {
-        // Récupérer l'ID de l'utilisateur à modifier
+        // ! Récup de l'id dans les paramètres
         const id = parseInt(req.params.id);
 
-        // Récupérer les données soumises à partir du formulaire
+        // ! Récup des données du formulaire
         const { username, color, bio } = req.body;
 
-        // Mettre à jour l'utilisateur dans la base de données
+        // ! Update dans la base
         const updatedUser = await prisma.users.update({
             where: {
                 id
@@ -109,38 +108,38 @@ app.post('/edit/:id', async (req, res) => {
             }
         });
 
-        // Répondre avec l'utilisateur mis à jour
+        // ! Redirect vers l'index si pas d'erreur
         res.redirect('/');
     } catch (error) {
-        // Gérer les erreurs
         console.error('Error updating user:', error);
-        res.status(500).json({ error: 'Error updating user' });
+        
+        // ! Re render de la page pour afficher l'erreur
+        res.render('edit', {layout: 'main', error: 'Erreur lors de la modification de l\'utilisateur (vérifier que l\'username n\'est pas déjà utilisé)' });
     }
 });
 
-// NOTE Suppression d'un utilisateur
+// ! Route delete user
 app.get('/delete/:id', async (req, res) => {
     try {
-        // Récupérer l'ID de l'utilisateur à supprimer
+        // ! Récup de l'id dans les paramètres
         const id = parseInt(req.params.id);
 
-        // Supprimer l'utilisateur de la base de données
+        // ! Delete de l'user dans la base
         const deletedUser = await prisma.users.delete({
             where: {
                 id
             }
         });
 
-        // Répondre avec l'utilisateur supprimé
+        // ! Redirect vers l'index si pas d'erreur
         res.redirect('/');
     } catch (error) {
-        // Gérer les erreurs
         console.error('Error deleting user:', error);
         res.status(500).json({ error: 'Error deleting user' });
     }
 });
 
-//Lancement du serveur
+// ! Lancement du serveur express sur le port 3000
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

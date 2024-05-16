@@ -52,6 +52,13 @@ h3 {
     margin-bottom: 0.5rem;
 }
 
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 .user-list {
     display: flex;
     flex-wrap: wrap;

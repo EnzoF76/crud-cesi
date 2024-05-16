@@ -1,18 +1,23 @@
+# ! On utilise l'image de Node;js 20.13.1 qu'on récupère depuis le Docker Hub
 FROM node:20.13.1
 
-# Create app directory
+# ! On définit le dossier de travail à l'intérieur de conteneur (dossier de l'application)
 WORKDIR usr/src/app
 
-# Install app dependencies
+# ! On copie les packages json dans le dossier de travail définit au dessus
 COPY package*.json ./
 
+# ! npm install installes les dépendances du projet (définies dans le package.json)
 RUN npm install
 
-# Bundle app source
+# ! Copie de tous les fichiers du dossier courant dans le dossier de travail du conteneur
 COPY . .
 
+# ! Génération du schéma prisma
 RUN npx prisma generate --schema=./prisma/schema.prisma
 
+# ! Expose le port 3000 (pour que les conteneurs docker communiquent entre eux)
 EXPOSE 3000
 
-CMD [ "./init.sh"]
+# ! Script pour les commandes prisma & le lancement du serveur dans le fichier index.js
+CMD ["./init.sh"]
